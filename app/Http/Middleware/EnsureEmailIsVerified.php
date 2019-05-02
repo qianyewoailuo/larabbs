@@ -24,6 +24,8 @@ class EnsureEmailIsVerified
             ! $request->is('email/*','logout')) {
 
             // 根据客户端返回对应的内容
+            // expectsJson() 如果是ajax请求返回true 否则返回false
+            // abort 函数抛出 异常处理 程序呈现的 HTTP 异常
             return $request->expectsJson()
                         ? abort(403,'您的邮箱还未通过验证')
                         : redirect()->route('verification.notice');

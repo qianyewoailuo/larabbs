@@ -36,6 +36,7 @@ class VerificationController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('signed')->only('verify');
+        // 访问频率控制中间件 这里是限制1分钟内只能6次访问
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 }
