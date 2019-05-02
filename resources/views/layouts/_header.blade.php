@@ -18,6 +18,7 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav navbar-right">
                 <!-- Authentication Links -->
+                <!-- 这里使用的是访客认证 当然也可以使用课程1中的 if (Auth::check()) 登录认证判断 -->
                 @guest
                 <!-- 当前访客状态显示登录注册页面 -->
                 <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">登录</a></li>
