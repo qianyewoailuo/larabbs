@@ -1,12 +1,15 @@
 <?php
+// use Illuminate\Support\Facades\Route;
+
 /*
  * @Description: 根据应用不同环境指定数据库配置信息
  * @Author: luo
  * @email: qianyewoailuo@126.com
  * @Date: 2019-05-02 14:14:03
- * @LastEditTime: 2019-05-02 14:15:48
+ * @LastEditTime: 2019-05-02 15:09:37
  */
 
+ // 获取应用运行环境配置
 function get_db_config()
 {
     if (getenv('IS_IN_HEROKU')) {
@@ -28,4 +31,10 @@ function get_db_config()
             'password'  => env('DB_PASSWORD', ''),
         ];
     }
+}
+
+// 请求的路由名称转换为 CSS 类名称
+function route_class()
+{
+    return str_replace('.','-',Route::currentRouteName());
 }
