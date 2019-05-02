@@ -1,5 +1,6 @@
 <!-- 主布局文件 -->
 <!DOCTYPE html>
+<!-- 获取本地配置信息 例如这里替换的是zh-CN -->
 <html lang="{{ app()->getLocale() }}">
 
 <head>
