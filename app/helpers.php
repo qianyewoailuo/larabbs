@@ -1,15 +1,5 @@
 <?php
-// use Illuminate\Support\Facades\Route;
-
-/*
- * @Description: 根据应用不同环境指定数据库配置信息
- * @Author: luo
- * @email: qianyewoailuo@126.com
- * @Date: 2019-05-02 14:14:03
- * @LastEditTime: 2019-05-03 04:23:07
- */
-
- // 获取应用运行环境配置
+// 获取应用运行环境配置
 function get_db_config()
 {
     if (getenv('IS_IN_HEROKU')) {
@@ -18,17 +8,17 @@ function get_db_config()
         return $db_config = [
             'connection' => 'pgsql',
             'host' => $url["host"],
-            'database'  => substr($url["path"], 1),
-            'username'  => $url["user"],
-            'password'  => $url["pass"],
+            'database' => substr($url["path"], 1),
+            'username' => $url["user"],
+            'password' => $url["pass"],
         ];
     } else {
         return $db_config = [
             'connection' => env('DB_CONNECTION', 'mysql'),
             'host' => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', 'forge'),
-            'username'  => env('DB_USERNAME', 'forge'),
-            'password'  => env('DB_PASSWORD', ''),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
         ];
     }
 }
@@ -36,5 +26,5 @@ function get_db_config()
 // 请求的路由名称转换为 CSS 类名称
 function route_class()
 {
-    return str_replace('.','-',Route::currentRouteName());
+    return str_replace('.', '-', Route::currentRouteName());
 }

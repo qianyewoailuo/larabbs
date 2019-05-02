@@ -1,5 +1,5 @@
 <?php
-// $db_config = get_db_config();
+$db_config = get_db_config();
 return [
 
     /*
@@ -14,8 +14,9 @@ return [
     */
 
     // 'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => $db_config['connection'],
 
-    'default' => getenv('IS_IN_HEROKU') ? 'pgsql' : env('DB_CONNECTION', 'mysql'),
+    // 'default' => getenv('IS_IN_HEROKU') ? 'pgsql' : env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -58,33 +59,34 @@ return [
             'engine' => null,
         ],
 
-        // 'pgsql' => [
-        //     'driver' => 'pgsql',
-        //     'host' => $db_config['host'],
-        //     'port' => env('DB_PORT', '5432'),
-        //     'database' => $db_config['database'],
-        //     'username' => $db_config['username'],
-        //     'password' => $db_config['password'],
-        //     'charset' => 'utf8',
-        //     'prefix' => '',
-        //     'prefix_indexes' => true,
-        //     'schema' => 'public',
-        //     'sslmode' => 'prefer',
-        // ],
-        // 尝试直接写死
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => 'ec2-50-17-227-28.compute-1.amazonaws.com',
-            'port' => 5432,
-            'database' => 'd7u34j7tsvu8im',
-            'username' => 'ezbocnncqxeexv',
-            'password' => 'ba2b26a1bf15044b4c8b6eb59b7cc8084e7c2666a78a1d6101e400b5a97270f8',
+            'host' => $db_config['host'],
+            'port' => env('DB_PORT', '5432'),
+            'database' => $db_config['database'],
+            'username' => $db_config['username'],
+            'password' => $db_config['password'],
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+
+        // X 尝试直接写死  √ 原来是忘记了将默认链接配置进行修改
+        // 'pgsql' => [
+        //     'driver' => 'pgsql',
+        //     'host' => 'ec2-50-17-227-28.compute-1.amazonaws.com',
+        //     'port' => 5432,
+        //     'database' => 'd7u34j7tsvu8im',
+        //     'username' => 'ezbocnncqxeexv',
+        //     'password' => 'ba2b26a1bf15044b4c8b6eb59b7cc8084e7c2666a78a1d6101e400b5a97270f8',
+        //     'charset' => 'utf8',
+        //     'prefix' => '',
+        //     'prefix_indexes' => true,
+        //     'schema' => 'public',
+        //     'sslmode' => 'prefer',
+        // ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
