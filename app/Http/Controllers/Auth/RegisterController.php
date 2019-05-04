@@ -37,6 +37,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        // guest中间件 只能访客访问
         $this->middleware('guest');
     }
 
