@@ -12,21 +12,31 @@ use App\Handlers\ImageUploadHandler;
 
 class UsersController extends Controller
 {
+
+    public function __construct()
+    {
+        // 未登录认证的访客会重定向到登录页面
+        $this->middleware('auth', ['except' => 'show']);
+    }
+
     // 当前show方法的参数使用了 [隐性路由绑定] 是是『约定优于配置』设计范式的体现
     // 具体解析参考 https://learnku.com/courses/laravel-intermediate-training/5.7/personal-page/2610#889027 md文档中的 创建控制器 部分
 
     // 个人中心显示
     public function show(User $user)
     {
-        return view('users.show',compact('user'));
+        return view('users.show', compact('user'));
     }
     // 用户资料编辑显示
     public function edit(User $user)
     {
-        return view('users.edit',compact('user'));
+        // 用户update策略授权
+        $this->authorize('update', $user);
+
+        return view('users.edit', compact('user'));
     }
     // 用户资料编辑更新
-    public function update(User $user,UserRequest $userRequest,ImageUploadHandler $uploader)
+    public function update(User $user, UserRequest $userRequest, ImageUploadHandler $uploader)
     {
         // 测试是否返回了avatar对象
         // 第一次测试为字符串 因为忘记了在表单中增加上传文件的声明
@@ -36,11 +46,14 @@ class UsersController extends Controller
         // 记得要将新增的introduction字段添加到filladle中
         // $user->update($userRequest->all());
 
+        // 用户update策略授权
+        $this->authorize('update', $user);
+
         // 获取数据并验证
         $data = $userRequest->all();
         // 获取头像并上传
         if ($userRequest->avatar) {
-            $result = $uploader->save($userRequest->avatar,'avatars',$user->id,416);
+            $result = $uploader->save($userRequest->avatar, 'avatars', $user->id, 416);
             if ($result) {
                 $data['avatar'] = $result['path'];
             }
@@ -48,6 +61,6 @@ class UsersController extends Controller
         // 更新用户信息
         $user->update($data);
         // with方法是请求门面提供的闪存设置方法
-        return redirect()->route('users.show',Auth::user())->with('success','个人资料更新成功!');
+        return redirect()->route('users.show', Auth::user())->with('success', '个人资料更新成功!');
     }
 }
