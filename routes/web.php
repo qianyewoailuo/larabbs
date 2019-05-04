@@ -38,3 +38,12 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 
 // 首页也设置,不需要了
 // Route::get('/home', 'HomeController@index')->name('home');
+
+// 资源控制器不仅节省了大量的代码,还严格遵循了 RESTful URI 的规范 在实际项目中应该优先使用
+
+// 用户控制器资源路由
+Route::resource('users','UsersController',['only'=>['show','update','edit']]);
+// 等价于 =>
+// Route::get('/users/{user}','UsersController@show')->name('users.show');
+// Route::get('/users/{user}/edit','UserController@edit')->name('Users.edit');
+// Route::patch('/users/{user}','UsersController@update')->name('users.update');
