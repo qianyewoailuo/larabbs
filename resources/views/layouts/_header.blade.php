@@ -27,7 +27,11 @@
                 <!-- 当前登录用户状态显示个人信息页面 -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if(Auth::user()->avatar)
+                        <img src="{{ Auth::user()->avatar }}" class="img-responsive img-circle" width="30px" height="30px">
+                        @else
                         <img src="https://raw.githubusercontent.com/qianyewoailuo/qianyewoailuo.github.io/master/comic/%E5%A4%B4%E5%83%8F.jpg" class="img-responsive img-circle" width="30px" height="30px">
+                        @endif
                         {{ Auth::user()->name }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">

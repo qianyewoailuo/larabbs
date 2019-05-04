@@ -8,6 +8,7 @@ use App\Models\User;
 // 创建命令 $ php artisan make:request UserRequest
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Handlers\ImageUploadHandler;
 
 class UsersController extends Controller
 {
@@ -25,10 +26,27 @@ class UsersController extends Controller
         return view('users.edit',compact('user'));
     }
     // 用户资料编辑更新
-    public function update(User $user,UserRequest $userRequest)
+    public function update(User $user,UserRequest $userRequest,ImageUploadHandler $uploader)
     {
+        // 测试是否返回了avatar对象
+        // 第一次测试为字符串 因为忘记了在表单中增加上传文件的声明
+        // 即 enctype="multipart/form-data"  重新填入即可
+        // dd($userRequest->avatar);
+
         // 记得要将新增的introduction字段添加到filladle中
-        $user->update($userRequest->all());
+        // $user->update($userRequest->all());
+
+        // 获取数据并验证
+        $data = $userRequest->all();
+        // 获取头像并上传
+        if ($userRequest->avatar) {
+            $result = $uploader->save($userRequest->avatar,'avatars',$user->id);
+            if ($result) {
+                $data['avatar'] = $result['path'];
+            }
+        }
+        // 更新用户信息
+        $user->update($data);
         // with方法是请求门面提供的闪存设置方法
         return redirect()->route('users.show',Auth::user())->with('success','个人资料更新成功!');
     }
