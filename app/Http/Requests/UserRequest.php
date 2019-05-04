@@ -33,7 +33,9 @@ class UserRequest extends FormRequest
             // unique:users,name,Auth::id  表示在默认数据库中的users表中检测字段name必须唯一,除了当前id为Auth::id()的用户
             'name' => 'required|between:3,25|regex:/^[A-Za-z0-9\-\_]+$/|unique:users,name,'.Auth::id(),
             'email' => 'required|email',
-            'introduction'  =>  'max:100'
+            'introduction'  =>  'max:100',
+            // 限制头像类型 分辨率 最小宽208 最小高208
+            'avatar' => 'mimes:jpeg,bmp,png,gif,jpg|dimensions:min_width=208,min_height=208',
         ];
     }
     // 自定义验证错误消息
@@ -44,6 +46,8 @@ class UserRequest extends FormRequest
             'name.regex' => '用户名只支持英文、数字、横杠和下划线。',
             'name.between' => '用户名必须介于 3 - 25 个字符之间。',
             'name.required' => '用户名不能为空。',
+            'avatar.mimes' => '头像必须是一个 jpeg,bmp,png,gif,jpg 类型的图片',
+            'avatar.dimensions' => '图片分辨率至少为208*208',
         ];
     }
 }
