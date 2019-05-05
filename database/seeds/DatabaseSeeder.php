@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        // 注册填充数据
+        $this->call(UsersTableSeeder::class);
 		$this->call(TopicsTableSeeder::class);
     }
 }
