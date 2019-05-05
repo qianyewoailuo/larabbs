@@ -14,9 +14,12 @@ class TopicsController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
+    // 话题列表页
 	public function index()
 	{
-		$topics = Topic::paginate();
+        // 所有的 ORM 关联数据读取都会触及 N+1 的问题
+        // 所以记得在遇到关联模型数据读取时使用 with()方法预加载关联属性进行调优 优化效率提高至少1/3
+		$topics = Topic::with('user','category')->paginate(30);
 		return view('topics.index', compact('topics'));
 	}
 
