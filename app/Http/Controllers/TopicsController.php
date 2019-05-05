@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TopicRequest;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
+use App\Handlers\ImageUploadHandler;
 
 class TopicsController extends Controller
 {
@@ -17,16 +18,40 @@ class TopicsController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
+    // 话题创建与编辑中上传图片
+    public function uploadImage(Request $request, ImageUploadHandler $uploader)
+    {
+        // 初始化返回数据，默认是失败的
+        $data = [
+            'success'   => false,
+            'msg'       => '上传失败!',
+            'file_path' => ''
+        ];
+        // 判断是否有上传文件，并赋值给 $file
+        if ($file = $request->upload_file) {
+            // 保存图片到本地
+            $result = $uploader->save($request->upload_file, 'topics', \Auth::id(), 1024);
+            // 图片保存成功的话
+            if ($result) {
+                $data['file_path'] = $result['path'];
+                $data['msg']       = "上传成功!";
+                $data['success']   = true;
+            }
+        }
+        return $data;
+    }
+
+
     // 话题列表页
-	public function index(Request $request, Topic $topic)
-	{
+    public function index(Request $request, Topic $topic)
+    {
         // 所有的 ORM 关联数据读取都会触及 N+1 的问题
         // 所以记得在遇到关联模型数据读取时使用 with()方法预加载关联属性进行调优 优化效率提高至少1/3
         // $topics = Topic::with('user','category')->paginate(30);
         // 增加自定义的排序方法withOrder
         $topics = Topic::withOrder($request->order)->paginate(20);
-		return view('topics.index', compact('topics'));
-	}
+        return view('topics.index', compact('topics'));
+    }
 
     public function show(Topic $topic)
     {
@@ -34,44 +59,44 @@ class TopicsController extends Controller
     }
 
     // 话题创建
-	public function create(Topic $topic)
-	{
+    public function create(Topic $topic)
+    {
         // 获取分类信息
         $categories = Category::all();
         // 传递话题信息与分类信息
-		return view('topics.create_and_edit', compact('topic','categories'));
-	}
+        return view('topics.create_and_edit', compact('topic', 'categories'));
+    }
     // 话题创建保存
-	public function store(TopicRequest $request,Topic $topic)
-	{
+    public function store(TopicRequest $request, Topic $topic)
+    {
         // fill方法会将传参的键值数组填充到模型的属性中
         $topic->fill($request->all());
         $topic->user_id = Auth::id();
         // 使用save方法是因为模型限制了user_id的写入
         $topic->save();
         // 创建成功跳转
-		return redirect()->route('topics.show', $topic->id)->with('success', '帖子创建成功!');
-	}
+        return redirect()->route('topics.show', $topic->id)->with('success', '帖子创建成功!');
+    }
 
-	public function edit(Topic $topic)
-	{
+    public function edit(Topic $topic)
+    {
         $this->authorize('update', $topic);
-		return view('topics.create_and_edit', compact('topic'));
-	}
+        return view('topics.create_and_edit', compact('topic'));
+    }
 
-	public function update(TopicRequest $request, Topic $topic)
-	{
-		$this->authorize('update', $topic);
-		$topic->update($request->all());
+    public function update(TopicRequest $request, Topic $topic)
+    {
+        $this->authorize('update', $topic);
+        $topic->update($request->all());
 
-		return redirect()->route('topics.show', $topic->id)->with('message', 'Updated successfully.');
-	}
+        return redirect()->route('topics.show', $topic->id)->with('message', 'Updated successfully.');
+    }
 
-	public function destroy(Topic $topic)
-	{
-		$this->authorize('destroy', $topic);
-		$topic->delete();
+    public function destroy(Topic $topic)
+    {
+        $this->authorize('destroy', $topic);
+        $topic->delete();
 
-		return redirect()->route('topics.index')->with('message', 'Deleted successfully.');
-	}
+        return redirect()->route('topics.index')->with('message', 'Deleted successfully.');
+    }
 }

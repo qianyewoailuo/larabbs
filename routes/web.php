@@ -13,6 +13,9 @@
 
 Route::get('/','PagesController@root')->name('root');
 
+// 话题创建编辑中的图片上传路由
+Route::post('upload_image', 'TopicsController@uploadImage')->name('topics.upload_image');
+
 // Auth::routes();      // 为了直观显示,使用下面等价的路由信息
 
 // 下面的路由等价于Auth::routes()生成的路由
