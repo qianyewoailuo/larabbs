@@ -15,11 +15,13 @@ class TopicsController extends Controller
     }
 
     // 话题列表页
-	public function index()
+	public function index(Request $request, Topic $topic)
 	{
         // 所有的 ORM 关联数据读取都会触及 N+1 的问题
         // 所以记得在遇到关联模型数据读取时使用 with()方法预加载关联属性进行调优 优化效率提高至少1/3
-		$topics = Topic::with('user','category')->paginate(30);
+        // $topics = Topic::with('user','category')->paginate(30);
+        // 增加自定义的排序方法withOrder
+        $topics = Topic::withOrder($request->order)->paginate(20);
 		return view('topics.index', compact('topics'));
 	}
 
