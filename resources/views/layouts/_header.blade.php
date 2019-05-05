@@ -31,7 +31,15 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">登录</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">注册</a></li>
                 @else
-                <!-- 当前登录用户状态显示个人信息页面 -->
+                <!-- 发帖 -->
+                <li class="nav-item">
+                    <a class="nav-link mt-1 mr-3 font-weight-bold" href="{{ route('topics.create') }}">
+                        <i class="fa fa-paint-brush fa-lg"></i>
+                    </a>
+                </li>
+                <!-- 个人信息 -->
+                <li class="nav-item dropdown">
+                    <!-- 当前登录用户状态显示个人信息页面 -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         @if(Auth::user()->avatar)
