@@ -9,12 +9,13 @@ class TopicPolicy extends Policy
 {
     public function update(User $user, Topic $topic)
     {
-        // return $topic->user_id == $user->id;
-        return true;
+        // 只允许当前登录用户编辑自己的话题
+        return $topic->user_id == $user->id;
     }
 
     public function destroy(User $user, Topic $topic)
     {
-        return true;
+        // 只允许当前登录用户删除自己的话题
+        return $topic->user_id == $user->id;
     }
 }
