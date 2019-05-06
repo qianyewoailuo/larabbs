@@ -3,7 +3,9 @@
 namespace App\Observers;
 
 use App\Models\Topic;
-use App\Handlers\SlugTranslateHandler;
+use App\Jobs\TranslateSlug;
+// 此时使用队列 这里不用引用了
+// use App\Jobs\TranslateSlug;
 
 // creating, created, updating, updated, saving,
 // saved,  deleting, deleted, restoring, restored
@@ -19,16 +21,21 @@ class TopicObserver
 
     public function saving(Topic $topic)
     {
-        // 使用 HTMLPurifier for Laravel 依赖防止xxs攻击
+        // 使用 HTMLPurifier for Laravel 进行 xxs 过滤
         $topic->body = clean($topic->body, 'user_topic_body');
-        // 在创建与更新过程中进行添加excerpt属性参数
+        // 生成话题摘录
         // make_excerpt() 是自定义的辅助函数 在 helpers.php 中定义
         $topic->excerpt = make_excerpt($topic->body);
+    }
 
+    public function saved(Topic $topic)
+    {
         // 如 slug 字段无内容，即使用翻译器对 title 进行翻译
         if (!$topic->slug) {
             // 使用app()辅助函数成 SlugTranslateHandler 实例
-            $topic->slug = app(SlugTranslateHandler::class)->translate($topic->title);
+            // $topic->slug = app(SlugTranslateHandler::class)->translate($topic->title);
+            // 推送到任务队列
+            dispatch(new TranslateSlug($topic));
         }
     }
 }
