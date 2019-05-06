@@ -41,6 +41,7 @@
                 </div>
 
                 <div class="topic-body mt-4 mb-4">
+                    <!-- 因为集成富文本,非转义输出 -->
                     {!! $topic->body !!}
                 </div>
 

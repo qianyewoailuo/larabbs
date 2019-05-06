@@ -18,6 +18,8 @@ class TopicObserver
 
     public function saving(Topic $topic)
     {
+        // 使用 HTMLPurifier for Laravel 依赖防止xxs攻击
+        $topic->body = clean($topic->body, 'user_topic_body');
         // 在创建与更新过程中进行添加excerpt属性参数
         // make_excerpt() 是自定义的辅助函数 在 helpers.php 中定义
         $topic->excerpt = make_excerpt($topic->body);
