@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Topic;
+use App\Handlers\SlugTranslateHandler;
 
 // creating, created, updating, updated, saving,
 // saved,  deleting, deleted, restoring, restored
@@ -23,5 +24,11 @@ class TopicObserver
         // 在创建与更新过程中进行添加excerpt属性参数
         // make_excerpt() 是自定义的辅助函数 在 helpers.php 中定义
         $topic->excerpt = make_excerpt($topic->body);
+
+        // 如 slug 字段无内容，即使用翻译器对 title 进行翻译
+        if (!$topic->slug) {
+            // 使用app()辅助函数成 SlugTranslateHandler 实例
+            $topic->slug = app(SlugTranslateHandler::class)->translate($topic->title);
+        }
     }
 }

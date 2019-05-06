@@ -52,7 +52,12 @@ Route::resource('users','UsersController',['only'=>['show','update','edit']]);
 // Route::patch('/users/{user}','UsersController@update')->name('users.update');
 
 // 话题控制器资源路由
-Route::resource('topics', 'TopicsController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
+Route::resource('topics', 'TopicsController', ['only' => ['index', 'create', 'store', 'update', 'edit', 'destroy']]);
+// show路由改为slug优化的路由
+Route::get('topics/{topic}/{slug?}','TopicsController@show')->name('topics.show');
+// URI 最后一个参数表达式 {slug?} ，? 意味着参数可选 即支持如下链接
+// http://larabbs.test/topics/115
+// http://larabbs.test/topics/115/slug-translation-test
 
 // 话题分类资源路由
 Route::resource('categories','CategoriesController',[

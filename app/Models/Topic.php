@@ -49,5 +49,11 @@ class Topic extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
+    // slug-link
+    public function link($params = [])
+    {
+        return route('topics.show',array_merge([$this->id, $this->slug], $params));
+    }
+
 
 }
