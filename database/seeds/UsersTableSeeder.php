@@ -13,12 +13,11 @@ class UsersTableSeeder extends Seeder
         // 头像假数据
         $avatars = [
             //  花丸幼稚园头像
-            // 'https://s2.ax1x.com/2019/05/05/EwxTl6.png',
-            // 'https://s2.ax1x.com/2019/05/05/E04Mb6.jpg',
-            // 'https://s2.ax1x.com/2019/05/05/E04lVK.md.jpg',
-            // 'https://s2.ax1x.com/2019/05/05/E041UO.md.jpg',
-            // 'https://s2.ax1x.com/2019/05/05/E04uK1.jpg',
-            // 'https://s2.ax1x.com/2019/05/05/E04KDx.md.jpg',
+            'https://s2.ax1x.com/2019/05/05/E04Mb6.jpg',
+            'https://s2.ax1x.com/2019/05/05/E04lVK.md.jpg',
+            'https://s2.ax1x.com/2019/05/05/E041UO.md.jpg',
+            'https://s2.ax1x.com/2019/05/05/E04uK1.jpg',
+            'https://s2.ax1x.com/2019/05/05/E04KDx.md.jpg',
 
             // 中世纪怪物头像
             'https://s2.ax1x.com/2019/05/05/E0TbtK.png',
@@ -55,6 +54,7 @@ class UsersTableSeeder extends Seeder
         // 单独处理第一个用户的数据
         $user = User::find(1);
         $user->name = 'qianyewoailuo';
+        $user->password = bcrypt('luo12345');
         $user->email = 'qianyewoailuo@126.com';
         $user->avatar = 'https://s2.ax1x.com/2019/05/05/EwxTl6.png';
         $user->save();

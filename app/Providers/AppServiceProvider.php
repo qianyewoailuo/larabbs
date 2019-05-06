@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
 	{
         // 用户以及话题模型观察器注册
 		\App\Models\User::observe(\App\Observers\UserObserver::class);
+		\App\Models\Reply::observe(\App\Observers\ReplyObserver::class);
 		\App\Models\Topic::observe(\App\Observers\TopicObserver::class);
 
         // 中文本地化

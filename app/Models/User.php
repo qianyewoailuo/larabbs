@@ -50,6 +50,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Topic::class);
     }
+    // 一个用户可以发布多个评论
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
 
     // 代码重用,判断是否是当前用户
     public function isAuthorOf($model)
