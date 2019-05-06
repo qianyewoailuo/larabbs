@@ -101,6 +101,6 @@ class TopicsController extends Controller
         $this->authorize('destroy', $topic);
         $topic->delete();
 
-        return redirect()->route('topics.index')->with('message', 'Deleted successfully.');
+        return redirect()->route('topics.index')->with('danger', '删除成功');
     }
 }
