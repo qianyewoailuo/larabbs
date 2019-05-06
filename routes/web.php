@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/','PagesController@root')->name('root');
+// Route::get('/','PagesController@root')->name('root');
+// 将首页换成话题展示
+Route::get('/','TopicsController@index')->name('root');
 
 // 话题创建编辑中的图片上传路由
 Route::post('upload_image', 'TopicsController@uploadImage')->name('topics.upload_image');
