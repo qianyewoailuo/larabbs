@@ -46,6 +46,7 @@ class LoginController extends Controller
         $request->session()->regenerate();
         // 增加闪存会话信息
         session()->flash('success','登录成功,欢迎您的回来!');
+        // 清除指定用户在缓存数据库中的登录次数记录,包括Lock记录
         $this->clearLoginAttempts($request);
 
         return $this->authenticated($request, $this->guard()->user())
