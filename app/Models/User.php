@@ -13,7 +13,8 @@ class User extends Authenticatable implements MustVerifyEmail
     use IlluminateMustVerifyEmail;
 
     use Notifiable {
-        // 将当前 notify 方法改为自定义重写的 laravelNotify
+        // 将当前user的 notify 方法改为自定义重写的 laravelNotify
+        // 其实不会这样的话还可以直接写一个新的topicNotify()方法 最后调用notify
         notify as protected laravelNotify;
     }
 
@@ -30,6 +31,14 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         $this->laravelNotify($instance);
+    }
+
+    public function markAsRead()
+    {
+        $this->notification_count = 0;
+        $this->save();
+        // 将notifications表中的read_at由null标志为已读时间
+        $this->unreadNotifications->markAsRead();
     }
 
     /**

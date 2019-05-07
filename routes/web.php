@@ -68,3 +68,5 @@ Route::resource('categories','CategoriesController',[
 // Route::resource('replies', 'RepliesController', ['only' => ['index', 'show', 'create', 'store', 'update', 'edit', 'destroy']]);
 // 只需要store 和 destroy 的路由
 Route::resource('replies', 'RepliesController', ['only' => ['store', 'destroy']]);
+// 通知列表路由
+Route::resource('notifications','NotificationsController',['only'=>['index']]);
