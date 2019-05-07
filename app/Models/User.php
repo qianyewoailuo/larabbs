@@ -6,10 +6,31 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\MustVerifyEmail as IlluminateMustVerifyEmail;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable ,IlluminateMustVerifyEmail;
+    use IlluminateMustVerifyEmail;
+
+    use Notifiable {
+        // 将当前 notify 方法改为自定义重写的 laravelNotify
+        notify as protected laravelNotify;
+    }
+
+    public function notify($instance)
+    {
+        // 如果要通知的人是当前用户就不必通知了
+        if ($this->id == Auth::id()) {
+            return;
+        }
+
+        // 只有数据库类型通知才需要提醒 直接发送Email或其他都pass
+        if (method_exists($instance,'toDatabase')) {
+            $this->increment('notification_count');
+        }
+
+        $this->laravelNotify($instance);
+    }
 
     /**
      * 使用 IlluminateMustVerifyEmail 后可以使用三个方法
