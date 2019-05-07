@@ -7,11 +7,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\MustVerifyEmail as IlluminateMustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use IlluminateMustVerifyEmail;
-
+    // 权限类
+    use HasRoles;
     use Notifiable {
         // 将当前user的 notify 方法改为自定义重写的 laravelNotify
         // 其实不会这样的话还可以直接写一个新的topicNotify()方法 最后调用notify

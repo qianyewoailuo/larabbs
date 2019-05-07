@@ -58,5 +58,16 @@ class UsersTableSeeder extends Seeder
         $user->email = 'qianyewoailuo@126.com';
         $user->avatar = 'https://s2.ax1x.com/2019/05/05/EwxTl6.png';
         $user->save();
+        // 初始化用户角色，将 1 号用户指派为『站长』
+        $user->assignRole('Founder');
+
+        // 将 2 号用户指派为『管理员』
+        $user = User::find(2);
+        $user->name = 'admin';
+        $user->password = bcrypt('luo12345');
+        $user->email = 'admin@admin.com';
+        $user->avatar = 'https://s2.ax1x.com/2019/05/05/E04uK1.jpg';
+        $user->save();
+        $user->assignRole('Maintainer');
     }
 }
