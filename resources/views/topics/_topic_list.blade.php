@@ -17,7 +17,7 @@
                     {{ $topic->title }}
                 </a>
                 <a class="float-right" href="{{ $topic->link() }}">
-                    <span class="badge badge-secondary badge-pill"> {{ $topic->reply_count }} </span>
+                    <span class="badge badge-secondary badge-pill"> {{ $topic->replies->count() }} </span>
                 </a>
             </div>
 
