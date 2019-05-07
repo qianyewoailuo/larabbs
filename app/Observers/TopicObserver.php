@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\Topic;
 use App\Jobs\TranslateSlug;
+use Illuminate\Support\Facades\DB;
+
 // 此时使用队列 这里不用引用了
 // use App\Jobs\TranslateSlug;
 
@@ -37,5 +39,12 @@ class TopicObserver
             // 推送到任务队列
             dispatch(new TranslateSlug($topic));
         }
+    }
+
+    public function deleted(Topic $topic)
+    {
+        // 话题被删除时将回复同步删除
+        // 在模型监听器中，数据库操作需避免再次触发 Eloquent 事件 必须要使用DB操作类
+        DB::table('replies')->where('topic_id',$topic->id)->delete();
     }
 }

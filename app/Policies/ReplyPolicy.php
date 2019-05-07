@@ -7,14 +7,10 @@ use App\Models\Reply;
 
 class ReplyPolicy extends Policy
 {
-    public function update(User $user, Reply $reply)
-    {
-        // return $reply->user_id == $user->id;
-        return true;
-    }
 
     public function destroy(User $user, Reply $reply)
     {
-        return true;
+        // 回复删除策略授权 >>> 仅当回复用户为当前用户或 当前话题作者为当前用户时 可删除
+        return $user->isAuthorOf($reply) || $user->isAuthorOf($reply->topic);
     }
 }

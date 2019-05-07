@@ -32,7 +32,9 @@ class TopicReplied extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         // 开启自定义通知的频道,对应的方法是to+频道名
-        return ['database', 'mail'];
+        return ['database'];
+        // 为了避免模拟的邮箱不存在报错暂时注释了邮件通知
+        // return ['database', 'mail'];
         // 默认是邮件频道
         // return ['mail'];
     }

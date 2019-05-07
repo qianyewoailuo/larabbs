@@ -12,8 +12,10 @@ class ReplyObserver
 {
     public function created(Reply $reply)
     {
-        $reply->topic->reply_count = $reply->topic->replies->count();
-        $reply->topic->save();
+        // 与下面的代码重用了
+        // $reply->topic->reply_count = $reply->topic->replies->count();
+        // $reply->topic->save();
+        $reply->topic->updateReplyCount();
 
         // 通知话题作者有新的评论
         $reply->topic->user->notify(new TopicReplied($reply));
@@ -32,9 +34,11 @@ class ReplyObserver
         // }
     }
 
-    public function destroy(Reply $reply)
+    public function deleted(Reply $reply)
     {
-        $reply->topic->reply_count = $reply->topic->replies->count();
-        $reply->topic->save();
+        // 和上述代码重复
+        // $reply->topic->reply_count = $reply->topic->replies->count();
+        // $reply->topic->save();
+        $reply->topic->updateReplyCount();
     }
 }
