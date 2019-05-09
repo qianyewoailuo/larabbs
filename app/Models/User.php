@@ -8,9 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\MustVerifyEmail as IlluminateMustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Traits\ActiveUserHelper;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use ActiveUserHelper;
     use IlluminateMustVerifyEmail;
     // 权限类
     use HasRoles;

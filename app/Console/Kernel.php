@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        // 每小时自动启动命令
+        $schedule->command('larabbs:calculate-active-user')->hourly();
     }
 
     /**

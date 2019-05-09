@@ -9,6 +9,7 @@ use App\Http\Requests\TopicRequest;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use App\Handlers\ImageUploadHandler;
+use App\Models\User;
 
 class TopicsController extends Controller
 {
@@ -43,17 +44,22 @@ class TopicsController extends Controller
 
 
     // 话题列表页
-    public function index(Request $request, Topic $topic)
+    public function index(Request $request, Topic $topic,User $user)
     {
         // 所有的 ORM 关联数据读取都会触及 N+1 的问题
         // 所以记得在遇到关联模型数据读取时使用 with()方法预加载关联属性进行调优 优化效率提高至少1/3
         // $topics = Topic::with('user','category')->paginate(30);
         // 增加自定义的排序方法withOrder
         $topics = Topic::withOrder($request->order)->paginate(20);
-        return view('topics.index', compact('topics'));
+        // 获取活跃用户
+        $active_users = $user->getActiveUsers();
+        // 测试活跃用户
+        // dd($active_users);
+
+        return view('topics.index', compact('topics','active_users'));
     }
 
-    public function show(Request $request,Topic $topic)
+    public function show(Request $request ,Topic $topic)
     {
         // 当slug参数存在且访问了非优化链接时将URL重定向到优化链接
         if (!empty($topic->slug) && $topic->slug != $request->slug) {
