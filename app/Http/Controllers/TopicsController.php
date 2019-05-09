@@ -10,6 +10,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use App\Handlers\ImageUploadHandler;
 use App\Models\User;
+use App\Models\Link;
 
 class TopicsController extends Controller
 {
@@ -44,7 +45,7 @@ class TopicsController extends Controller
 
 
     // 话题列表页
-    public function index(Request $request, Topic $topic,User $user)
+    public function index(Request $request, Topic $topic,User $user,Link $link)
     {
         // 所有的 ORM 关联数据读取都会触及 N+1 的问题
         // 所以记得在遇到关联模型数据读取时使用 with()方法预加载关联属性进行调优 优化效率提高至少1/3
@@ -53,10 +54,12 @@ class TopicsController extends Controller
         $topics = Topic::withOrder($request->order)->paginate(20);
         // 获取活跃用户
         $active_users = $user->getActiveUsers();
+        // 资源推荐
+        $links = $link->getAllCached();
         // 测试活跃用户
         // dd($active_users);
 
-        return view('topics.index', compact('topics','active_users'));
+        return view('topics.index', compact('topics','active_users','links'));
     }
 
     public function show(Request $request ,Topic $topic)
