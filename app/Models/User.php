@@ -15,9 +15,9 @@ class User extends Authenticatable implements MustVerifyEmail
     // 权限类
     use HasRoles;
     use Notifiable {
-        // 将当前user的 notify 方法改为自定义重写的 laravelNotify
-        // 其实不会这样的话还可以直接写一个新的topicNotify()方法 最后调用notify
-        notify as protected laravelNotify;
+    // 将当前user的 notify 方法改为自定义重写的 laravelNotify
+    // 其实不会这样的话还可以直接写一个新的topicNotify()方法 最后调用notify
+    notify as protected laravelNotify;
     }
 
     public function notify($instance)
@@ -28,7 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         // 只有数据库类型通知才需要提醒 直接发送Email或其他都pass
-        if (method_exists($instance,'toDatabase')) {
+        if (method_exists($instance, 'toDatabase')) {
             $this->increment('notification_count');
         }
 
@@ -56,7 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','introduction','avatar',
+        'name', 'email', 'password', 'introduction', 'avatar',
     ];
 
     /**
@@ -92,5 +92,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isAuthorOf($model)
     {
         return $this->id == $model->user_id;
+    }
+
+    // password属性修改器
+    public function setPasswordAttribute($value)
+    {
+        // 如果值的长度不为 60，即认为是未进行加密
+        if (strlen($value) != 60) {
+            $value = bcrypt($value);
+        }
+
+        $this->attributes['password'] = $value;
+    }
+
+    // avatar属性修改器
+    public function setAvatarAttribute($path)
+    {
+        // 如果不是 `http` 子串开头，那就是从后台上传的，需要补全 URL
+        if(!starts_with($path,'http')){
+            $path = config('app.url')."/uploads/images/avatars/$path";
+        }
+
+        $this->attributes['avatar'] = $path;
     }
 }
