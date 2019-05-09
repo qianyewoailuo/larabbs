@@ -68,6 +68,15 @@
                     </div> -->
                     <!-- 优化用户下拉信息样式 -->
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <!-- 后台管理 -->
+                        @can('manage_contents')
+                        <a class="dropdown-item" href="{{ url(config('administrator.uri')) }}">
+                            <i class="fas fa-tachometer-alt mr-2"></i>
+                            管理后台
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        @endcan
+                        <!-- 个人中心 -->
                         <a class="dropdown-item" href="{{ route('users.show', Auth::id()) }}">
                             <i class="far fa-user mr-2"></i>
                             个人中心
