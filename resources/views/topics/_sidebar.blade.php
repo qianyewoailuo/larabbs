@@ -34,6 +34,9 @@
         <hr class="mt-2 mb-3">
         @foreach ($links as $link)
         <a class="media mt-1" href="{{ $link->link }}">
+            <div class="media-left media-middle mr-2 ml-1">
+                <img src="https://s2.ax1x.com/2019/05/10/E2Myu9.png" width="24px" height="24px" class="media-object">
+            </div>
             <div class="media-body">
                 <span class="media-heading text-muted">{{ $link->title }}</span>
             </div>
