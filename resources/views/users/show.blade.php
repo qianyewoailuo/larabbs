@@ -21,10 +21,10 @@
                 <h5><strong>注册于</strong></h5>
                 <!-- 易于人类阅读 例如1年前之类 -->
                 <!-- 注意还要去app/provider中设置carnon本地中文化 -->
-                <hr>
-                <p>{{$user->created_at}}</p>
-                <hr>
                 <p>{{$user->created_at->diffForHumans()}}</p>
+                <hr>
+                <h5><strong>最后活跃</strong></h5>
+                <p title="{{  $user->last_actived_at }}">{{ $user->last_actived_at->diffForHumans() }}</p>
             </div>
         </div>
     </div>

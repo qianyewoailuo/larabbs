@@ -9,9 +9,11 @@ use Illuminate\Auth\MustVerifyEmail as IlluminateMustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Traits\ActiveUserHelper;
+use App\Models\Traits\LastActivedAtHelper;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use LastActivedAtHelper;
     use ActiveUserHelper;
     use IlluminateMustVerifyEmail;
     // 权限类
@@ -111,8 +113,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function setAvatarAttribute($path)
     {
         // 如果不是 `http` 子串开头，那就是从后台上传的，需要补全 URL
-        if(!starts_with($path,'http')){
-            $path = config('app.url')."/uploads/images/avatars/$path";
+        if (!starts_with($path, 'http')) {
+            $path = config('app.url') . "/uploads/images/avatars/$path";
         }
 
         $this->attributes['avatar'] = $path;
