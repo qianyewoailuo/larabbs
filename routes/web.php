@@ -72,3 +72,7 @@ Route::resource('categories','CategoriesController',[
 Route::resource('replies', 'RepliesController', ['only' => ['store', 'destroy']]);
 // 通知列表路由
 Route::resource('notifications','NotificationsController',['only'=>['index']]);
+
+// 测试路由
+Route::get('carbon','TestsController@carbonTest');
+Route::get('helper','TestsController@helperTest');

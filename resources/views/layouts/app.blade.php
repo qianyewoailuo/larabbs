@@ -28,7 +28,7 @@
         </div>
         @include('layouts._footer')
     </div>
-    <!-- SudoSU -->
+    <!-- SudoSU in isLoacl -->
     @if (app()->isLocal())
     @include('sudosu::user-selector')
     @endif
