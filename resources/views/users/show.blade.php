@@ -23,7 +23,7 @@
                 <!-- 易于人类阅读 例如1年前之类 -->
                 <!-- 注意还要去app/provider中设置carnon本地中文化 -->
                 <p>{{$user->created_at->diffForHumans()}}</p>
-                @if(app()->isLoacl())
+                @if (app()->isLocal())
                 <hr>
                 <h5><strong>最后活跃</strong></h5>
                 <hr>
