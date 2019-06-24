@@ -53,7 +53,11 @@ class TopicsController extends Controller
         // 增加自定义的排序方法withOrder
         $topics = Topic::withOrder($request->order)->paginate(20);
         // 获取活跃用户
-        $active_users = $user->getActiveUsers();
+        if(getenv('IS_IN_HEROKU')){
+            $active_users = [];
+        }else{
+            $active_users = $user->getActiveUsers();
+        }
         // 资源推荐
         $links = $link->getAllCached();
         // 测试活跃用户
