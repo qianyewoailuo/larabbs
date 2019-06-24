@@ -17,7 +17,7 @@ class RecordLastActivedTime
     public function handle($request, Closure $next)
     {
         // 如果用户是登录用户的话
-        if (Auth::check()) {
+        if (Auth::check() && !getenv('IS_IN_HEROKU')) {
             // 记录最后登录时间
             Auth::user()->recordLastActivedAt();
         }
