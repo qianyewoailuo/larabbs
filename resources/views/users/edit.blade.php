@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-group">
                         <label for="email-field">邮 箱</label>
-                        <input class="form-control" type="text" name="email" id="email-field" value="{{ old('email', $user->email) }}" disabled />
+                        <input class="form-control" type="text" name="email" id="email-field" value="{{ old('email', $user->email) }}" readonly />
                     </div>
                     <!-- 个人简介 -->
                     <div class="form-group">
